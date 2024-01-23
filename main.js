@@ -187,7 +187,15 @@ for (const [parent, mixins] of Object.entries(externalIncludes)) {
         for (const member of mixin.members) {
             switch (member.type) {
                 case 'attribute':
-                    write(`/** @type {?GPU} */\n${parent}.prototype.${member.name};`);
+                    {
+                        let typeNameClosure = typeToClosure(member.idlType);
+                        if (typeNameClosure !== undefined) {
+                            // navigator.gpu can be missing on browsers that don't have support.
+                            if (typeNameClosure === '!GPU') typeNameClosure = '?GPU';
+                            write(`/** @type {${typeNameClosure}} */`);
+                        }
+                        write(`${parent}.prototype.${member.name};`);
+                    }
                     break;
                 default:
                     assert(false, 'unimplemented navigator mixin member type: ' + member.type);
