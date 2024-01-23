@@ -1,0 +1,7 @@
+{
+  "name": "webidl-to-closure-externs",
+  "dependencies": {
+    "google-closure-compiler": "^20230802.0.0",
+    "webidl2": "^24.4.1"
+  }
+}
